@@ -25,7 +25,19 @@ jobs:
         run: |
           # Scanning files
           trivy fs . > trivyfs.txt
+      - name: Check if image exists
+        run: |
+          if docker inspect debiprasan/tic-tac-toe:latest; then
+            echo "Image exists"
+            echo "::set-output name=exists::true"
+          else
+            echo "Image does not exist"
+            echo "::set-output name=exists::false"
+          fi
 
+      - name: Remove image if exists
+        if: steps.check_image.outputs.exists == 'true'
+        run: docker image rm debiprasan/tic-tac-toe:latest
       - name: Docker build and push
         run: |
           # Run commands to build and push Docker images
