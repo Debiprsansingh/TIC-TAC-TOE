@@ -35,5 +35,13 @@ jobs:
           docker push debiprasan/tic-tac-toe:latest
         env:
           DOCKER_CLI_ACI: 1
-
-      
+  deploy:
+    needs: build-analyze-scan
+    runs-on: label # Use your self-hosted runner label here
+    steps:
+      - name: Pull the Docker image
+        run: docker pull debiprasan/tic-tac-toe:latest
+      - name: Trivy image scan
+        run: trivy image debiprasan/tic-tac-toe:latest # Add Trivy scan command here
+      - name: Run the container
+        run: docker run -d --name ticgame -p 3000:3000 debiprasan/tic-tac-toe:latest
