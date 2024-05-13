@@ -61,7 +61,7 @@ jobs:
         run: docker run -d --name ticgame1 -p 3000:3000 debiprasan/tic-tac-toe:latest
 
       - name: Update kubeconfig
-        run: aws eks --region "ap-south-1" update-kubeconfig --name "EKS"
+        run: aws eks --region "ap-south-1" update-kubeconfig --name "EKS1"
 
       - name: Deploy to EKS
         run: kubectl apply -f deployment-service.yml
